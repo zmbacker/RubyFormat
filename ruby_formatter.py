@@ -38,8 +38,8 @@ class RubyFormatCommand(sublime_plugin.TextCommand):
 
 		cmd = "cat " + temp_code_file + " | " + ruby_script + " -"
 		print cmd
-		
-		res = os.popen(cmd).read() # "test ruby" #jsbeautifier.beautify(self.view.substr(replaceRegion), opts)
+
+		res = os.popen(cmd).read()
 		if(not formatSelection and settings.get('ensure_newline_at_eof_on_save')):
 			res = res + "\n"
 
