@@ -1,6 +1,6 @@
 import os.path
 from os import popen
-
+import codecs
 import sublime, sublime_plugin, re
 
 s = sublime.load_settings("RubyFormat.sublime-settings")
@@ -28,18 +28,24 @@ class RubyFormatCommand(sublime_plugin.TextCommand):
 
 		plugin_path = os.path.join(sublime.packages_path(), 'RubyFormat')
 		temp_code_file = os.path.join(plugin_path,".tempcode")
-		ruby_script = os.path.join(plugin_path, "lib", "beautiful.rb")
 
-		tempFile = open(temp_code_file,"w")
+		tempFile = codecs.open(temp_code_file, "w", 'utf8')
 		tempFile.write(self.view.substr(replaceRegion))
 		tempFile.close()
-		temp_code_file = temp_code_file.replace(" ","\ ")
-		ruby_script = ruby_script.replace(" ","\ ")
+		
+		ruby_script = os.path.join(plugin_path, "lib", "beautiful.rb")
 
-		cmd = "cat " + temp_code_file + " | " + ruby_script + " -"
-		print cmd
+		if(sublime.platform() != "windows"):
+			temp_code_file = temp_code_file.replace(" ","\ ")
+			ruby_script = ruby_script.replace(" ","\ ")
 
-		res = os.popen(cmd).read()
+		if(sublime.platform() == "windows"):
+			cmd =  'ruby "'+ ruby_script + '" "' + temp_code_file + '"'
+		else:
+			cmd = "cat " + temp_code_file + " | " + ruby_script + " -"
+
+		res = os.popen(cmd).read().decode("utf-8")
+
 		if(not formatSelection and settings.get('ensure_newline_at_eof_on_save')):
 			res = res + "\n"
 

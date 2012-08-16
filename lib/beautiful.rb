@@ -191,13 +191,15 @@ module RBeautify
          print dest
       else # named file source
          source = File.read(path)
+         # print source
          dest,error = beautify_string(source,path)
-         if(source != dest)
-            # make a backup copy
-            File.open(path + "~","w") { |f| f.write(source) }
-            # overwrite the original
-            File.open(path,"w") { |f| f.write(dest) }
-         end
+         print dest
+         # if(source != dest)
+         #    # make a backup copy
+         #    File.open(path + "~","w") { |f| f.write(source) }
+         #    # overwrite the original
+         #    File.open(path,"w") { |f| f.write(dest) }
+         # end
       end
       return error
    end # beautify_file
