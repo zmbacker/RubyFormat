@@ -12,3 +12,8 @@ I think it also can work on linux system, but I haven't tested it on linux. If y
 
 
 I will make it to work fine on Windows and other unix like system in a few days later.
+
+# TODO List
+
+- Config file
+- the pre line indent number determine the selected code

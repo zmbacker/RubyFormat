@@ -40,10 +40,11 @@ class RubyFormatCommand(sublime_plugin.TextCommand):
 			ruby_script = ruby_script.replace(" ","\ ")
 
 		if(sublime.platform() == "windows"):
-			cmd =  'ruby "'+ ruby_script + '" "' + temp_code_file + '"'
+			cmd =  'ruby "'+ ruby_script + '" 2 " " "" "' + temp_code_file + '"'
 		else:
 			cmd = "cat " + temp_code_file + " | " + ruby_script + " -"
 
+		print cmd
 		res = os.popen(cmd).read().decode("utf-8")
 
 		if(not formatSelection and settings.get('ensure_newline_at_eof_on_save')):

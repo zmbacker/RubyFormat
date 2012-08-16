@@ -210,8 +210,14 @@ module RBeautify
          STDERR.puts "usage: Ruby filenames or \"-\" for stdin."
          exit 0
       end
-      ARGV.each do |path|
+
+      if ARGV.size == 1
          error = (beautify_file(path))?true:error
+      else
+         RBeautify::TabSize = ARGV[0]
+         RBeautify::TabStr = ARGV[1]
+         RBeautify::BaseStr = ARGV[2]
+         error = (beautify_file(ARGV[3]))?true:error
       end
       error = (error)?1:0
       exit error
