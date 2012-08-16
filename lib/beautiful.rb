@@ -31,6 +31,17 @@ module RBeautify
    RBeautify::TabStr = " "
    RBeautify::TabSize = 3
 
+   def self.tab_str=(str)
+      @tab_str = str
+   end
+
+   def self.tab_size=( num )
+      @tab_size = num
+   end
+
+   def self.base_str=( base )
+      @base_str = base
+   end
    # indent regexp tests
 
    IndentExp = [
@@ -69,7 +80,10 @@ module RBeautify
    ]
 
    def RBeautify.rb_make_tab(tab)
-      return (tab < 0)? "":TabStr * TabSize * tab
+      @tab_str = " " unless @tab_str
+      @tab_size = 2 unless @tab_size
+      @base_str = "" unless @base_str
+      return (tab < 0)? "" : @tab_str * @tab_size * tab
    end
 
    def RBeautify.rb_add_line(line,tab)
@@ -212,11 +226,11 @@ module RBeautify
       end
 
       if ARGV.size == 1
-         error = (beautify_file(path))?true:error
+         error = (beautify_file( ARGV[0] ))?true:error
       else
-         RBeautify::TabSize = ARGV[0]
-         RBeautify::TabStr = ARGV[1]
-         RBeautify::BaseStr = ARGV[2]
+         RBeautify.tab_size = ARGV[0].to_i
+         RBeautify.tab_str = ARGV[1]
+         RBeautify.base_str = ARGV[2]
          error = (beautify_file(ARGV[3]))?true:error
       end
       error = (error)?1:0

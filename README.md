@@ -17,3 +17,8 @@ I will make it to work fine on Windows and other unix like system in a few days 
 
 - Config file
 - the pre line indent number determine the selected code
+
+# requirement
+- ruby 1.8.7 ( excute command "ruby -v" in your terminal, there is the version of the ruby )
+- Sublime Text 2
+

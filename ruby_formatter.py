@@ -42,7 +42,8 @@ class RubyFormatCommand(sublime_plugin.TextCommand):
 		if(sublime.platform() == "windows"):
 			cmd =  'ruby "'+ ruby_script + '" 2 " " "" "' + temp_code_file + '"'
 		else:
-			cmd = "cat " + temp_code_file + " | " + ruby_script + " -"
+			cmd =  ''+ ruby_script + ' 2 " " "" ' + temp_code_file + ''
+			# cmd = "cat " + temp_code_file + " | " + ruby_script + " -"
 
 		print cmd
 		res = os.popen(cmd).read().decode("utf-8")
