@@ -6,7 +6,7 @@ With this plugin, it's easy to format ruby code. Let your ruby code beautifully.
 
 
 
-Now It can work on "Mac OS X Lion 10.7.4" and "Windows 7 system" .
+Now It can work on "Mac OS X Lion 10.7.4" and "Windows 7" .
 
 I think it also can work on linux system, but I haven't tested it on linux. If you have use the plugin on linux and it could work fine. Please tell me that.
 
