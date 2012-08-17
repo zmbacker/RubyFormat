@@ -1,3 +1,3 @@
 [
-    { "caption": "Format: RubyCode", "command": "ruby_format" }
+    { "caption": "Format: Ruby", "command": "ruby_format" }
 ]
