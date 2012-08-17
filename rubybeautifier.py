@@ -1,6 +1,6 @@
 # import sys
 # import getopt
-# import re
+import re
 # import string
 
 #
@@ -38,39 +38,49 @@ class Beautifier:
 
         self.opts = opts
         self.indent_exp = [
-            '^module\b',
-            '^class\b',
-            '^if\b',
-            '(=\s*|^)until\b',
-            '(=\s*|^)for\b',
-            '^unless\b',
-            '(=\s*|^)while\b',
-            '(=\s*|^)begin\b',
-            '(^| )case\b',
-            '\bthen\b',
-            '^rescue\b',
-            '^def\b',
-            '\bdo\b',
-            '^else\b',
-            '^elsif\b',
-            '^ensure\b',
-            '\bwhen\b',
-            '\{[^\}]*$',
-            '\[[^\]]*$'
+            re.compile(r'^module\b'),
+            re.compile(r'^class\b'),
+            re.compile(r'^if\b'),
+            re.compile(r'(=\s*|^)until\b'),
+            re.compile(r'(=\s*|^)for\b'),
+            re.compile(r'^unless\b'),
+            re.compile(r'(=\s*|^)while\b'),
+            re.compile(r'(=\s*|^)begin\b'),
+            re.compile(r'(^| )case\b'),
+            re.compile(r'\bthen\b'),
+            re.compile(r'^rescue\b'),
+            re.compile(r'^def\b'),
+            re.compile(r'\bdo\b'),
+            re.compile(r'^else\b'),
+            re.compile(r'^elsif\b'),
+            re.compile(r'^ensure\b'),
+            re.compile(r'\bwhen\b'),
+            re.compile(r'\{[^\}]*$'),
+            re.compile(r'\[[^\]]*$')
         ]
         self.outdent_exp = [
-            '^rescue\b',
-            '^ensure\b',
-            '^elsif\b',
-            '^end\b',
-            '^else\b',
-            '\bwhen\b',
-            '^[^\{]*\}',
-            '^[^\[]*\]'
+            re.compile(r'^rescue\b'),
+            re.compile(r'^ensure\b'),
+            re.compile(r'^elsif\b'),
+            re.compile(r'^end\b'),
+            re.compile(r'^else\b'),
+            re.compile(r'\bwhen\b'),
+            re.compile(r'^[^\{]*\}'),
+            re.compile(r'^[^\[]*\]')
+        ]
+        self.confusion_exp = [
+            re.compile(r'\{[^\{]*?\}'),
+            re.compile(r'\[[^\[]*?\]'),
+            re.compile(r'\'.*?\''),
+            re.compile(r'".*?"'),
+            re.compile(r'\`.*?\`'),
+            re.compile(r'\([^\(]*?\)'),
+            re.compile(r'\/.*?\/'),
+            re.compile(r'\%r(.).*?\1'),
         ]
 
 
-    def make_tab( tab ):
+    def make_tab(self, tab ):
         if(tab < 0):
             tab_str = ''
         else:
@@ -78,7 +88,7 @@ class Beautifier:
         return tab_str
 
 
-    def add_line( line, tab ):
+    def add_line( self, line, tab ):
         line = line.strip()
         if len( line ) > 0:
             line = self.make_tab( tab ) + line
@@ -96,13 +106,78 @@ class Beautifier:
         multiline_str = ""
         tab = 0
         output = []
-        for line in s.split("\n"):
+        line_point = 0
+        lines = s.split("\n")
+
+        for line in lines:
             line = line.rstrip()
-            print line
+            if( not program_end ):
+                # detect program end mark
+                if( line_point >= len(lines) ):
+                    program_end = True
+                else:
+                    #combine continuing lines
+                    if( (not re.search(r'^\s*#',line)) and re.search(r'[^\\]\\\s*$',line) ):
+                        multiline_array.append( line )
+                        multiline_str += re.sub(r'^(.*)\\\s*$', r'\1', line)
+                        continue
 
+                    #add final line
+                    if( len(multiline_str) > 0 ):
+                        multiline_array.append( line )
+                        multiline_str += re.sub( r'^(.*)\\\s*$', r'\1',line)
+                    if len(multiline_str) > 0:
+                        tline = multiline_str.strip()
+                    else:
+                        tline = line.strip()
+                    
+                    if re.search(r'^=begin',tline):
+                        comment_block = True
+                    if in_here_doc:
+                        if re.search(r'\s*%s\s*'%(here_doc_term),tline): in_here_doc = False
+                    else:
+                        if re.search( r'=\s*<<' , tline ):
+                            here_doc_term = re.sub( r'.*=\s*<<-?\s*([_|\w]+).*' , r'\1', tline )
+                            in_here_doc = len( here_doc_term ) > 0
+            if comment_block or program_end or in_here_doc :
+                output.append( line )
+            else:
+                comment_line = re.search( r'^#' ,tline )
+                if not comment_line:
+                    for ce in self.confusion_exp :
+                        while ce.search(tline):
+                            tline = ce.sub( '', tline )
+                    # delete end-of-line comments
+                    tline = re.sub(r'#[^\"]+$','',tline,1) 
+                    # convert quotes
+                    tline = re.sub(r'\\\"', "'", tline )
 
+                    for oe in self.outdent_exp:
+                        if oe.search( tline ):
+                            tab -= 1
+                            break
 
-
+                    
+                if len( multiline_array ) > 0 :
+                    for ml in multiline_array:
+                        output.append( self.add_line(ml,tab) )
+                    multiline_array = []
+                    multiline_str = ""
+                else:
+                    output.append( self.add_line( line, tab ) )
+                if not comment_line :
+                    for ie in self.indent_exp :
+                        if ie.search( tline ) and ( not re.search( r'\s+end\s*$',tline )  ):
+                            tab += 1
+                            break
+            if re.search( r'^=end', tline ):
+                comment_block = False
+            line_point += 1
+            # print line
+        error = ( tab != 0)
+        if error :
+            print "Error: indent/outdent mismatch: %s."
+        return "\n".join( output )
 
 
 

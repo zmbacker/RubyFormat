@@ -2,6 +2,7 @@ import os.path
 from os import popen
 import codecs
 import sublime, sublime_plugin, re
+import rubybeautifier
 
 s = sublime.load_settings("RubyFormat.sublime-settings")
 
@@ -26,27 +27,7 @@ class RubyFormatCommand(sublime_plugin.TextCommand):
 		else:
 			replaceRegion = sublime.Region(0, self.view.size())
 
-		plugin_path = os.path.join(sublime.packages_path(), 'RubyFormat')
-		temp_code_file = os.path.join(plugin_path,".tempcode")
-
-		tempFile = codecs.open(temp_code_file, "w", 'utf8')
-		tempFile.write(self.view.substr(replaceRegion))
-		tempFile.close()
-		
-		ruby_script = os.path.join(plugin_path, "lib", "beautiful.rb")
-
-		if(sublime.platform() != "windows"):
-			temp_code_file = temp_code_file.replace(" ","\ ")
-			ruby_script = ruby_script.replace(" ","\ ")
-
-		if(sublime.platform() == "windows"):
-			cmd =  'ruby "'+ ruby_script + '" 2 " " "" "' + temp_code_file + '"'
-		else:
-			cmd =  ''+ ruby_script + ' 2 " " "" ' + temp_code_file + ''
-			# cmd = "cat " + temp_code_file + " | " + ruby_script + " -"
-
-		print cmd
-		res = os.popen(cmd).read().decode("utf-8")
+		res = rubybeautifier.beautify(self.view.substr(replaceRegion))
 
 		if(not formatSelection and settings.get('ensure_newline_at_eof_on_save')):
 			res = res + "\n"
