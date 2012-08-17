@@ -8,9 +8,14 @@ s = sublime.load_settings("RubyFormat.sublime-settings")
 
 class RubyFormatCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
-		settings = self.view.settings()
+		sublime_settings = self.view.settings()
 
-		# settings
+		# indent settings
+		opts = rubybeautifier.default_options()
+		opts.indent_char = " " if sublime_settings.get("translate_tabs_to_spaces") else "\t"
+		opts.indent_size = int(sublime_settings.get("tab_size")) if opts.indent_char == " " else 1
+
+
 		selection = self.view.sel()[0]
 		nwsOffset = self.prev_non_whitespace()
 
@@ -27,9 +32,9 @@ class RubyFormatCommand(sublime_plugin.TextCommand):
 		else:
 			replaceRegion = sublime.Region(0, self.view.size())
 
-		res = rubybeautifier.beautify(self.view.substr(replaceRegion))
+		res = rubybeautifier.beautify(self.view.substr(replaceRegion),opts)
 
-		if(not formatSelection and settings.get('ensure_newline_at_eof_on_save')):
+		if(not formatSelection and sublime_settings.get('ensure_newline_at_eof_on_save')):
 			res = res + "\n"
 
 		self.view.replace(edit, replaceRegion, res)

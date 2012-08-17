@@ -4,11 +4,10 @@ import re
 # import string
 
 #
-# Originally written by Lester Zhao,
-# Conversion to python by Lester Zhao, zm.backer@gmail.com,
+# Written by Lester Zhao, zm.backer@gmail.com,
 # MIT licence, enjoy.
-#
-# Python is not my native language, feel free to push things around.
+# I am a ruby programmer.
+# Python is not my native language, but it can work for you.
 
 
 # Options Class
@@ -85,7 +84,7 @@ class Beautifier:
             tab_str = ''
         else:
             tab_str = self.opts.indent_char * self.opts.indent_size * tab
-        return tab_str
+        return self.opts.indent_base + tab_str
 
 
     def add_line( self, line, tab ):
