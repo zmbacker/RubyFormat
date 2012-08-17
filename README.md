@@ -1,4 +1,4 @@
-# A ruby code format plugin for Sublime Text 2
+## A ruby code format plugin for Sublime Text 2
 
 If you are a ruby programmer, maybe it's useful for you.
 
@@ -8,7 +8,7 @@ It was rewriten by python code. So it can works fine with out ruby command and f
 And also it was independence of the platform.
 Hope you use it happily just like the beautiful ruby code.
 
-# Requirement
+## Requirement
  Every platform which can run Sublime Text 2, the plugin will work for you.
 
  It can works on:
@@ -17,7 +17,7 @@ Hope you use it happily just like the beautiful ruby code.
 - Linux
 
 
-# Installation
+## Installation
 
 
 ### Manual Installation
@@ -28,7 +28,7 @@ Then type the command like this:
   git clone git://github.com/zmbacker/RubyFormat.git
 ```
 
-# Useful
+## Useful
 
 ### Key Binding
 ```
@@ -38,12 +38,12 @@ ctrl + alt + r on Linux
 ```
 
 
-# TODO List
+## TODO List
 - Make your ruby code to look more beautiful.
 
 
 
-### License
+## License
 Copyright (C) 2012 Lester Zhao
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of
