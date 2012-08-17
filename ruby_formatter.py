@@ -2,14 +2,14 @@ import os.path
 from os import popen
 import codecs
 import sublime, sublime_plugin, re
+import rubybeautifier
 
-s = sublime.load_settings("RubyFormat.sublime-settings")
+l_settings = sublime.load_settings("RubyFormat.sublime-settings")
 
 class RubyFormatCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
-		settings = self.view.settings()
+		sublime_settings = self.view.settings()
 
-		# settings
 		selection = self.view.sel()[0]
 		nwsOffset = self.prev_non_whitespace()
 
@@ -26,31 +26,21 @@ class RubyFormatCommand(sublime_plugin.TextCommand):
 		else:
 			replaceRegion = sublime.Region(0, self.view.size())
 
-		plugin_path = os.path.join(sublime.packages_path(), 'RubyFormat')
-		temp_code_file = os.path.join(plugin_path,".tempcode")
+		# indent settings
+		opts = rubybeautifier.default_options()
+		opts.indent_char = " " if sublime_settings.get("translate_tabs_to_spaces") else "\t"
+		opts.indent_size = int(sublime_settings.get("tab_size")) if opts.indent_char == " " else 1
 
-		tempFile = codecs.open(temp_code_file, "w", 'utf8')
-		tempFile.write(self.view.substr(replaceRegion))
-		tempFile.close()
+
+		if formatSelection :
+			opts.indent_base = rubybeautifier.indent_base( self.get_prev_line(replaceRegion) ,opts)
 		
-		ruby_script = os.path.join(plugin_path, "lib", "beautiful.rb")
+		res = rubybeautifier.beautify(self.view.substr(replaceRegion),opts)
 
-		if(sublime.platform() != "windows"):
-			temp_code_file = temp_code_file.replace(" ","\ ")
-			ruby_script = ruby_script.replace(" ","\ ")
-
-		if(sublime.platform() == "windows"):
-			cmd =  'ruby "'+ ruby_script + '" 2 " " "" "' + temp_code_file + '"'
-		else:
-			cmd =  ''+ ruby_script + ' 2 " " "" ' + temp_code_file + ''
-			# cmd = "cat " + temp_code_file + " | " + ruby_script + " -"
-
-		print cmd
-		res = os.popen(cmd).read().decode("utf-8")
-
-		if(not formatSelection and settings.get('ensure_newline_at_eof_on_save')):
+		if(not formatSelection and sublime_settings.get('ensure_newline_at_eof_on_save')):
 			res = res + "\n"
 
+		
 		self.view.replace(edit, replaceRegion, res)
 
 		# re-place cursor
@@ -81,3 +71,20 @@ class RubyFormatCommand(sublime_plugin.TextCommand):
 				break
 
 		return offset
+	# get prev line with real contents
+	def get_prev_line(self, selected_region):
+		current_line = self.view.line( selected_region.begin() )
+		got_line = False
+		first_line = False
+		while not ( got_line or first_line ) :
+			prev_line_point = current_line.begin() - 1
+			if prev_line_point < 0 :
+				first_line = True
+				return ""
+				break
+			current_line = self.view.line( prev_line_point )
+			current_line_str = self.view.substr(current_line)
+			if len( current_line_str.strip() ) > 0 :
+				got_line = True
+				return current_line_str
+				break

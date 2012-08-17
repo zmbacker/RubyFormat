@@ -1,24 +1,66 @@
-# A ruby format plugin for Sublime Text 2
+## A ruby code format plugin for Sublime Text 2
 
-It is not finished. I will try my best to make it better for guys who write ruby code by Sublime Text 2.
+If you are a ruby programmer, maybe it's useful for you.
 
-With this plugin, it's easy to format ruby code. Let your ruby code beautifully.
+With this plugin, it's easy to format ruby code. It can make your ruby code to look beautiful and clearly.
+
+It was rewriten by python code. So it can works fine with out ruby command and faster than using beautiful.rb script.
+And also it was independence of the platform.
+Hope you use it happily just like the beautiful ruby code.
+
+## Requirement
+ Every platform which can run Sublime Text 2, the plugin will work for you.
+
+ It can works on:
+- Mac OS X
+- Windows
+- Linux
+
+
+## Installation
+
+
+### Manual Installation
+Open a terminal. change the path to Sublime Text 2 's packages folder.
+Then type the command like this:
+```bash
+  cd "~/Library/Application Support/Sublime Text 2/Packages/"
+  git clone git://github.com/zmbacker/RubyFormat.git
+```
+
+## Useful
+
+### Key Binding
+```
+shift + cmd + r on Mac OS X
+ctrl + alt + r on Windows
+ctrl + alt + r on Linux
+```
+
+
+## TODO List
+- Make your ruby code to look more beautiful.
 
 
 
-Now It can work on "Mac OS X Lion 10.7.4" and "Windows 7" .
+## License
+Copyright (C) 2012 Lester Zhao
 
-I think it also can work on linux system, but I haven't tested it on linux. If you have use the plugin on linux and it could work fine. Please tell me that.
+Permission is hereby granted, free of charge, to any person obtaining a copy of
+this software and associated documentation files (the "Software"), to deal in
+the Software without restriction, including without limitation the rights to
+use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies
+of the Software, and to permit persons to whom the Software is furnished to do
+so, subject to the following conditions:
 
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
 
-I will make it to work fine on Windows and other unix like system in a few days later.
-
-# TODO List
-
-- Config file
-- the pre line indent number determine the selected code
-
-# Requirement
-- Ruby 1.8.7 ( excute command "ruby -v" in your terminal, there is the version of the ruby )
-- Sublime Text 2
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
 
