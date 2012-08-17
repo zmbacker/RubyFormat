@@ -11,6 +11,12 @@ Hope you use it happily just like the beautiful ruby code.
 # Requirement
  Every platform which can run Sublime Text 2, the plugin will work for you.
 
+ It can works on:
+- Mac OS X
+- Windows
+- Linux
+
+
 # Installation
 
 
