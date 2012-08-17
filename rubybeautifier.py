@@ -169,7 +169,7 @@ class Beautifier:
                     output.append( self.add_line( line, tab ) )
                 if not comment_line :
                     for ie in self.indent_exp :
-                        if ie.search( tline ) and ( not re.search( r'\s+end\s*$',tline )  ):
+                        if ie.search( tline ) and ( not re.search( r'\s+end[\s\.]*.*$',tline )  ):
                             tab += 1
                             break
             if re.search( r'^=end', tline ):
@@ -178,7 +178,7 @@ class Beautifier:
             # print line
         error = ( tab != 0)
         if error :
-            print "Error: indent/outdent mismatch: %s."
+            print "Error: indent/outdent mismatch: %d."%(tab)
         return "\n".join( output )
 
 
