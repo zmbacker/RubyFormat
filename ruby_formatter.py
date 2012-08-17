@@ -4,7 +4,7 @@ import codecs
 import sublime, sublime_plugin, re
 import rubybeautifier
 
-s = sublime.load_settings("RubyFormat.sublime-settings")
+l_settings = sublime.load_settings("RubyFormat.sublime-settings")
 
 class RubyFormatCommand(sublime_plugin.TextCommand):
 	def run(self, edit):
