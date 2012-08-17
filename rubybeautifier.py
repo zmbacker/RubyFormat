@@ -24,11 +24,14 @@ def default_options():
     return BeautifierOptions()
 
 
+
 def beautify(string, opts = default_options() ):
     b = Beautifier()
     return b.beautify(string, opts)
 
-
+def indent_base( prev_line, opts = default_options() ):
+    b = Beautifier()
+    return b.get_base_indent( prev_line, opts )
 
 
 class Beautifier:
@@ -179,6 +182,18 @@ class Beautifier:
         return "\n".join( output )
 
 
+    def get_base_indent( self, prev_line, opts = None):
+        if opts != None:
+            self.opts = opts
+        base_str = re.search( r'^\s*', prev_line ).group()
+        # base_re = re.compile(r'^\s*')
+        # base_re.search()
+
+        for ie in self.indent_exp :
+            if ie.search( prev_line.strip() ) :
+                return base_str + self.make_tab(1)
+                break
+        return base_str
 
 
 
