@@ -40,18 +40,16 @@ class RubyFormatCommand(sublime_plugin.TextCommand):
 		if(not formatSelection and sublime_settings.get('ensure_newline_at_eof_on_save')):
 			res = res + "\n"
 
-		
 		self.view.replace(edit, replaceRegion, res)
 
 		# re-place cursor
 		offset = self.get_nws_offset(nwsOffset, self.view.substr(sublime.Region(0, self.view.size())))
-		rc = self.view.rowcol(offset)
-		pt = self.view.text_point(rc[0], rc[1])
+		pt = offset
 		sel = self.view.sel()
 		sel.clear()
-		self.view.sel().add(sublime.Region(pt))
-
+		self.view.sel().add(sublime.Region(pt)) 
 		self.view.show_at_center(pt)
+
 
 
 	def prev_non_whitespace(self):

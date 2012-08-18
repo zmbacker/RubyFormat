@@ -166,7 +166,6 @@ class Beautifier:
                             break
                     for de in self.debtdent_exp: #by lester
                         if de.search( tline ):
-                            print tline
                             debt_tab += 1
                             break
 
@@ -196,6 +195,9 @@ class Beautifier:
             print "Error: indent/outdent mismatch: %d."%(tab)
         return "\n".join( output )
 
+    def format_line( self, line):
+        
+        pass
 
     def get_base_indent( self, prev_line, opts = None):
         if opts != None:
