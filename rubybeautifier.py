@@ -58,7 +58,8 @@ class Beautifier:
             re.compile(r'^ensure\b'),
             re.compile(r'\bwhen\b'),
             re.compile(r'\{[^\}]*$'),
-            re.compile(r'\[[^\]]*$')
+            re.compile(r'\[[^\]]*$'),
+            re.compile(r'\([^\(]*$')
         ]
         self.outdent_exp = [
             re.compile(r'^rescue\b'),
@@ -68,7 +69,11 @@ class Beautifier:
             re.compile(r'^else\b'),
             re.compile(r'\bwhen\b'),
             re.compile(r'^[^\{]*\}'),
-            re.compile(r'^[^\[]*\]')
+            re.compile(r'^[^\[]*\]'),
+            re.compile(r'^\).*$')
+        ]
+        self.debtdent_exp = [
+            re.compile(r'.+\).*$')
         ]
         self.confusion_exp = [
             re.compile(r'\{[^\{]*?\}'),
@@ -107,6 +112,7 @@ class Beautifier:
         multiline_array = []
         multiline_str = ""
         tab = 0
+        debt_tab = 0
         output = []
         line_point = 0
         lines = s.split("\n")
@@ -158,6 +164,11 @@ class Beautifier:
                         if oe.search( tline ):
                             tab -= 1
                             break
+                    for de in self.debtdent_exp: #by lester
+                        if de.search( tline ):
+                            print tline
+                            debt_tab += 1
+                            break
 
                     
                 if len( multiline_array ) > 0 :
@@ -172,6 +183,10 @@ class Beautifier:
                         if ie.search( tline ) and ( not re.search( r'\s+end[\s\.]*.*$',tline )  ):
                             tab += 1
                             break
+                    if debt_tab > 0: # by lester
+                        tab -= debt_tab
+                        debt_tab = 0
+
             if re.search( r'^=end', tline ):
                 comment_block = False
             line_point += 1

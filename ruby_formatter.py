@@ -20,7 +20,7 @@ class RubyFormatCommand(sublime_plugin.TextCommand):
 		# formatting a selection/highlighted area
 		if(len(selection) > 0):
 			formatSelection = True
-			replaceRegion = selection
+			replaceRegion = self.get_formatting_region( selection )
 
 		# formatting the entire file
 		else:
@@ -71,6 +71,7 @@ class RubyFormatCommand(sublime_plugin.TextCommand):
 				break
 
 		return offset
+
 	# get prev line with real contents
 	def get_prev_line(self, selected_region):
 		current_line = self.view.line( selected_region.begin() )
@@ -88,3 +89,18 @@ class RubyFormatCommand(sublime_plugin.TextCommand):
 				got_line = True
 				return current_line_str
 				break
+
+	# make sure that the formated text are from the begin of a line to the end of another line.
+	def get_formatting_region( self, selection ):
+		begin_point = self.view.line( selection.begin() ).begin()
+		end_point = self.view.line( selection.end() ).end()
+		if selection.a < selection.b :
+			return sublime.Region( end_point, begin_point )
+		else:
+			return sublime.Region( begin_point, end_point )
+
+
+
+
+
+
