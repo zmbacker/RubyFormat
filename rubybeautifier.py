@@ -59,7 +59,8 @@ class Beautifier:
             re.compile(r'\bwhen\b'),
             re.compile(r'\{[^\}]*$'),
             re.compile(r'\[[^\]]*$'),
-            re.compile(r'\([^\(]*$')
+            # re.compile(r'\([^\)]*$'),
+            # re.compile(r'\(\s*\{.*(?!\}\s*\)$).*$')
         ]
         self.outdent_exp = [
             re.compile(r'^rescue\b'),
@@ -70,10 +71,11 @@ class Beautifier:
             re.compile(r'\bwhen\b'),
             re.compile(r'^[^\{]*\}'),
             re.compile(r'^[^\[]*\]'),
-            re.compile(r'^\).*$')
+            # re.compile(r'^\).*$'),
+            # re.compile(r'^\}\s*\).*$')
         ]
         self.debtdent_exp = [
-            re.compile(r'.+\).*$')
+            # re.compile(r'.+\).*$')
         ]
         self.confusion_exp = [
             re.compile(r'\{[^\{]*?\}'),
