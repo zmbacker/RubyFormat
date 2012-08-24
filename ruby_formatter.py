@@ -38,7 +38,7 @@ class RubyFormatCommand(sublime_plugin.TextCommand):
 			opts.indent_base = rubybeautifier.indent_base( self.get_prev_line(replaceRegion) ,opts)
 		
 		res = rubybeautifier.beautify(self.view.substr(replaceRegion),opts)
-		print rubybeautifier2.beautify(self.view.substr(replaceRegion),opts)
+		res = rubybeautifier2.beautify(self.view.substr(replaceRegion),opts)
 		if(not formatSelection and sublime_settings.get('ensure_newline_at_eof_on_save')):
 			res = res + "\n"
 

@@ -126,8 +126,14 @@ class Beautifier:
         c = self.input[parser_pos]
         parser_pos += 1
 
-        if c == '\n' :
-            return c, 'TK_END_LINE'
+
+        if c in self.whitespace :
+            if c == '\n' :
+                return c, 'TK_END_LINE'
+            if c == '\t' :
+                return c, 'TK_UNKNOWN'
+            if c == ' ' :
+                return c, 'TK_UNKNOWN'
 
         # in line comment token: TK_INLINE_COMMENT
         if c == '#':
