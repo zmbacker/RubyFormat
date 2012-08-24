@@ -3,6 +3,8 @@ from os import popen
 import codecs
 import sublime, sublime_plugin, re
 import rubybeautifier
+import rubybeautifier2
+
 
 l_settings = sublime.load_settings("RubyFormat.sublime-settings")
 
@@ -36,7 +38,7 @@ class RubyFormatCommand(sublime_plugin.TextCommand):
 			opts.indent_base = rubybeautifier.indent_base( self.get_prev_line(replaceRegion) ,opts)
 		
 		res = rubybeautifier.beautify(self.view.substr(replaceRegion),opts)
-
+		print rubybeautifier2.beautify(self.view.substr(replaceRegion),opts)
 		if(not formatSelection and sublime_settings.get('ensure_newline_at_eof_on_save')):
 			res = res + "\n"
 
