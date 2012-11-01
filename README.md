@@ -19,6 +19,17 @@ Hope you use it happily just like the beautiful ruby code.
 
 ## Installation
 
+### Package Control
+
+Using [Package Control](http://wbond.net/sublime_packages/package_control), a package manager for Sublime Text 2.
+
+In Sublime Text 2, press "win(cmd) + shift + p" and then type "install".
+
+Once you see "Package Control: Install Package", enter.
+
+When the packages load, another selection window will appear. 
+
+TypeRubyFormat and enter. All done!
 
 ### Manual Installation
 Open a terminal. change the path to Sublime Text 2 's packages folder.
