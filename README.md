@@ -29,7 +29,7 @@ Once you see "Package Control: Install Package", enter.
 
 When the packages load, another selection window will appear. 
 
-TypeRubyFormat and enter. All done!
+Type RubyFormat and enter. All done!
 
 ### Manual Installation
 Open a terminal. change the path to Sublime Text 2 's packages folder.
